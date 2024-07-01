@@ -1,0 +1,13 @@
+Dataset
+Cyp. (2023). Asian Hornet 2 Dataset [ Open Source Dataset ]. In Roboflow Universe . Roboflow . https://universe.roboflow.com/cyp-puhyr/asian-hornet-2
+
+
+Classification vs détection d'objet
+https://mindy-support.com/news-post/image-classification-vs-object-detection-everything-you-need-to-know/
+
+Classification vs détection d'objet vs segmentation
+https://ruhelalakshya.medium.com/image-classification-vs-object-detection-and-image-segmentation-e89af675e976
+
+Integration of CNN in mobile applications
+https://arxiv.org/pdf/2103.07286
+=> Mentionne un format de fichier .ONNX (Open Neural Network Exchange)
