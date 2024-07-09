@@ -24,3 +24,9 @@ https://www.sciencedirect.com/science/article/pii/S1877050922011760
 
 CNN watermark pour déterminer classe:
 https://www.researchgate.net/publication/331397043_Unmasking_Clever_Hans_Predictors_and_Assessing_What_Machines_Really_Learn
+
+CNN récent et perf sur mobiles
+https://machinethink.net/blog/mobile-architectures/ 
+
+CNN archis
+https://medium.com/analytics-vidhya/types-of-convolutional-neural-networks-lenet-alexnet-vgg-16-net-resnet-and-inception-net-759e5f197580
