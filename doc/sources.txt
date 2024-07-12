@@ -30,3 +30,9 @@ https://machinethink.net/blog/mobile-architectures/
 
 CNN archis
 https://medium.com/analytics-vidhya/types-of-convolutional-neural-networks-lenet-alexnet-vgg-16-net-resnet-and-inception-net-759e5f197580
+
+TF to TFLite
+https://kieran-mcc91.medium.com/deep-learning-project-image-classifier-deployed-to-flutter-app-from-scratch-f77c53014cb9
+
+TFLite to Flutter
+https://medium.com/analytics-vidhya/run-cnn-model-in-flutter-10c944cadcba
