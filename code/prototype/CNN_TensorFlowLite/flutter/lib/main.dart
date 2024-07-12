@@ -81,15 +81,14 @@ class _MyHomePageState extends State<MyHomePage> {
       image = img.decodeImage(imageData);
       setState(() {});
       classification = await imageClassificationHelper?.inferenceImage(image!);
-
+      results = (classification!.entries.toList()
+        ..sort(
+              (a, b) => a.value.compareTo(b.value),
+        ))
+          .reversed
+          .take(3);
       setState(() {});
     }
-  }
-
-  @override
-  void dispose() {
-    imageClassificationHelper?.close();
-    super.dispose();
   }
 
   @override

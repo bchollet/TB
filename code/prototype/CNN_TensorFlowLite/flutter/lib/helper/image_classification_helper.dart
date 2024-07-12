@@ -22,15 +22,12 @@ import 'package:flutter/services.dart';
 import 'package:image/image.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 
-import 'isolate_inference.dart';
-
 class ImageClassificationHelper {
   static const modelPath = 'assets/model.tflite';
   static const labelsPath = 'assets/labels.txt';
 
   late final Interpreter interpreter;
   late final List<String> labels;
-  late final IsolateInference isolateInference;
   late Tensor inputTensor;
   late Tensor outputTensor;
 
@@ -75,27 +72,48 @@ class ImageClassificationHelper {
   Future<void> initHelper() async {
     _loadLabels();
     _loadModel();
-    isolateInference = IsolateInference();
-    await isolateInference.start();
-  }
-
-  Future<Map<String, double>> _inference(InferenceModel inferenceModel) async {
-    ReceivePort responsePort = ReceivePort();
-    isolateInference.sendPort
-        .send(inferenceModel..responsePort = responsePort.sendPort);
-    // get inference result.
-    var results = await responsePort.first;
-    return results;
   }
 
   // inference still image
   Future<Map<String, double>> inferenceImage(Image image) async {
-    var isolateModel = InferenceModel(image, interpreter.address, labels,
-        inputTensor.shape, outputTensor.shape);
-    return _inference(isolateModel);
-  }
+    // resize original image to match model shape.
+    Image imageInput = copyResize(
+      image,
+      width: inputTensor.shape[1],
+      height: inputTensor.shape[2],
+    );
 
-  Future<void> close() async {
-    isolateInference.close();
+    // RGB value of each pixel in image
+    final imageMatrix = List.generate(
+      imageInput.height,
+          (y) => List.generate(
+        imageInput.width,
+            (x) {
+          final pixel = imageInput.getPixel(x, y);
+          return [
+            (pixel.r / 127.5) - 1,
+            (pixel.g / 127.5) - 1,
+            (pixel.b / 127.5) - 1,];
+        },
+      ),
+    );
+
+    // Set tensors shape
+    final input = [imageMatrix];
+    final output = List.filled(1*1000, 0).reshape([1,1000]);
+    // Run inference;
+    interpreter.run(input, output);
+    // Get first output tensor
+    final result = output.first;
+    // Set classification map {label: points}
+    var classification = <String, double>{};
+    for (var i = 0; i < result.length; i++) {
+      if (result[i] != 0) {
+        // Set label: points
+        classification[labels[i]] =
+            result[i].toDouble();
+      }
+    }
+    return classification;
   }
 }
