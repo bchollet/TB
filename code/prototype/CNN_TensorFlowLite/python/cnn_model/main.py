@@ -26,37 +26,16 @@ def predict_image_class(img_path):
     return decoded_predictions
 
 # Sauvegarde du modèle en SavedModel (nécessaire pour la conversion TFLite)
-# tf.saved_model.save(model, "model")
+tf.saved_model.save(model, "model")
 
 # Conversion vers TFLite
-# converter = tf.lite.TFLiteConverter.from_saved_model("model") # path to the SavedModel directory
-# tflite_model = converter.convert()
+converter = tf.lite.TFLiteConverter.from_saved_model("model") # path to the SavedModel directory
+tflite_model = converter.convert()
 
 # Sauvegarde du modèle TFLite
-# with open('model_lite/model.tflite', 'wb') as f:
-#   f.write(tflite_model)
-
-
-# Fonction pour afficher le format et le type de la sortie du modèle Keras
-def inspect_keras_model_output(img_path):
-    img_array = load_and_preprocess_image(img_path)
-    predictions = model.predict(img_array)
-    print("Type des prédictions Keras:", type(predictions))
-    print("Forme des prédictions Keras:", predictions.shape)
-    print("Prédictions Keras:", predictions)
-
-# Fonction pour prédire et décoder les labels avec le modèle Keras
-def get_keras_labels(img_path):
-    img_array = load_and_preprocess_image(img_path)
-    predictions = model.predict(img_array)
-    decoded_predictions = decode_predictions(predictions, top=1000)  # top=1000 pour obtenir tous les labels
-    return decoded_predictions
+with open('model_lite/model.tflite', 'wb') as f:
+  f.write(tflite_model)
 
 # Exemple d'utilisation
 img_path = 'img/pq.jpg'
-labels = get_keras_labels(img_path)
-for i, (imagenet_id, label, score) in enumerate(labels[0]):
-    print(f"{i+1}: {label} ({score:.20f})")
-
-# Exemple d'utilisation
-# inspect_keras_model_output('img/cat.jpg')
+print(predict_image_class(img_path))
